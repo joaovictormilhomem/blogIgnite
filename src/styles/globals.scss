@@ -5,9 +5,17 @@
 }
 
 :root {
-  --pink: #FF57B2;
-  --gray-10: #F8F8F8;
-  --gray-100: #D7D7D7;
-  --gray-200: #BBBBBB;
-  --gray-900: #1A1D23;
+  --Highlight: #FF57B2;
+  --Heading: #F8F8F8;
+  --Body: #D7D7D7;
+  --Info: #BBBBBB;
+  --Background: #1A1D23;
+}
+
+body {
+  background-color: var(--Background);
+  color: var(--Heading);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  justify-content: center;
 }
