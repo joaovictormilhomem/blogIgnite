@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { getPrismicClient } from '../services/prismic';
@@ -68,7 +69,9 @@ export default function Home({ postsPagination }: HomeProps) {
         <div className={styles.posts}>
           {posts.map(post => (
             <article key={post.uid}>
-              <h2>{post.data.title}</h2>
+              <Link href={`/post/${post.uid}`}>
+                <a>{post.data.title}</a>
+              </Link>
               <p>{post.data.subtitle}</p>
               <div className={styles.infos}>
                 <div className={styles.info}>
