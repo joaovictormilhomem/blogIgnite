@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import { getPrismicClient } from '../services/prismic';
+import { createDateString } from '../logic/string';
 // import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
@@ -26,7 +27,7 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ postsPagination }: HomeProps) {
+function Home({ postsPagination }: HomeProps) {
   const [posts, setPosts] = useState(postsPagination.results);
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
@@ -81,7 +82,7 @@ export default function Home({ postsPagination }: HomeProps) {
                     src="/images/calendar.svg"
                     alt="calendar"
                   />
-                  <span>{post.first_publication_date}</span>
+                  <span>{createDateString(post.first_publication_date)}</span>
                 </div>
                 <div className={styles.info}>
                   <Image
@@ -108,27 +109,11 @@ export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
   const response = await prismic.getByType('posts', {
     fetch: ['publication.title', 'publication.subtitle', 'publication.author'],
-    pageSize: 1,
+    pageSize: 20,
   });
   const postsPagination = {
     next_page: response.next_page,
-    results: response.results.map(post => {
-      return {
-        uid: post.uid,
-        first_publication_date: new Date(
-          post.last_publication_date
-        ).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: 'long',
-          year: 'numeric',
-        }),
-        data: {
-          title: post.data.title,
-          subtitle: post.data.subtitle,
-          author: post.data.author,
-        },
-      };
-    }),
+    results: response.results,
   };
 
   return {
@@ -137,3 +122,5 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   };
 };
+
+export default Home;
